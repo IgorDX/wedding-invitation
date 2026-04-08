@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faye & Niño — Wedding Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --main-color: #FBBABE;
+    --cream: #f5f0e8;
+    --blush: #d4a5a5;
+    --dusty-rose: #b8797a;
+    --sage: #8a9e8c;
+    --dark: #2c2420;
+    --gold: #c9a96e;
+    --light-gold: #ffd176;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-slider { position: absolute; inset: 0; }
+
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.4s ease;
+    background-size: cover;
+    background-position: center;
+  }
+  .hero-slide.active { opacity: 1; }
+  .hero-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(44,36,32,0.35) 0%, rgba(44,36,32,0.55) 100%);
+  }
+
+  .hero-slide:nth-child(1) { background-image: url('./pictures/first-hero.jpeg'); }
+  .hero-slide:nth-child(2) { background-image: url('./pictures/second-hero.jpeg'); }
+  .hero-slide:nth-child(3) { background-image: url('./pictures/third-hero.jpeg'); }
+
+  @media (max-width: 600px) {
+    .hero-slide:nth-child(2) { background-image: url("pictures/second-hero-phone.jpeg"); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 2rem;
+    animation: fadeUp 1.2s ease both;
+  }
+
+  .hero-label {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--light-gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    font-weight: 300;
+    font-style: italic;
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-ampersand {
+    color: var(--gold);
+    font-size: 1.1em;
+    display: block;
+  }
+
+  .hero-divider {
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+    margin: 2rem auto;
+    position: relative;
+  }
+  .hero-divider::before, .hero-divider::after {
+    content: '◆';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 6px;
+    color: var(--gold);
+  }
+  .hero-divider::before { left: -12px; }
+  .hero-divider::after { right: -12px; }
+
+  .hero-date {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    letter-spacing: 0.25em;
+    font-size: 0.85rem;
+    color: var(--light-gold);
+    text-transform: uppercase;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    margin-top: 2.5rem;
+    padding: 0.85rem 2.5rem;
+    border: 1px solid var(--gold);
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    transition: background 0.3s, color 0.3s;
+  }
+  .hero-cta:hover { background: var(--gold); color: var(--dark); }
+
+  .slider-dots {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 0.6rem;
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    border: none;
+  }
+  .dot.active { background: var(--gold); transform: scale(1.4); }
+
+  /* ── SAVE THE DATE ── */
+  .save-the-date {
+    background: #FBB8BF;
+    color: var(--cream);
+    text-align: center;
+    padding: clamp(2.5rem, 8vw, 5rem) 1rem;
+  }
+
+  .section-eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 1.2rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.2;
+  }
+
+  .date-block {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-top: 3rem;
+    flex-wrap: nowrap;
+    width: 100%;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .date-unit {
+    text-align: center;
+    padding: clamp(0.8rem, 3vw, 1.5rem) clamp(1rem, 4vw, 2.5rem);
+    border: 1px solid #0000001a;
+    flex: 1;
+    min-width: 0;
+  }
+  .date-unit + .date-unit { border-left: none; }
+
+  .date-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 8vw, 3rem);
+    font-weight: 300;
+    color: white;
+    line-height: 1;
+  }
+
+  .date-label {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    letter-spacing: 0.2em;
+    font-size: clamp(0.45rem, 2vw, 0.6rem);
+    text-transform: uppercase;
+    color: white;
+    margin-top: 0.4rem;
+  }
+
+  /* ── STORY ── */
+
+  .story {
+    padding: 6rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  @media (max-width: 700px) { .story { grid-template-columns: 1fr; gap: 3rem; } }
+
+  .story-image { position: relative; }
+
+.story-image__wrapper {
+  overflow: hidden;
+}
+
+.story-image img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: 5%;
+  display: block;
+}
+
+  .story-image::before {
+    content: '';
+    position: absolute;
+    inset: -1rem;
+    border: 1px solid var(--gold);
+    z-index: -1;
+    opacity: 0.4;
+  }
+
+  .story-text .section-eyebrow { color: var(--dusty-rose); text-align: left; }
+  .story-text .section-title { text-align: left; }
+
+  .story-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: rgba(44,36,32,0.8);
+    margin-top: 1.5rem;
+  }
+
+  /* ── GALLERY ── */
+  .gallery-section {
+    background: #ede8e0;
+    padding: 5rem 0;
+    overflow: hidden;
+  }
+
+  .gallery-section .section-eyebrow,
+  .gallery-section .section-title {
+    text-align: center;
+    color: black;
+    padding: 0 2rem;
+  }
+
+  .gallery-track-wrap {
+    position: relative;
+    margin-top: 3rem;
+    overflow: hidden;
+  }
+
+  .gallery-card {
+    flex: 0 0 calc(33.333% - 1rem);
+    min-width: 260px;
+  }
+
+  .gallery-card img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gallery-caption {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(44,36,32,0.6);
+    margin-top: 0.6rem;
+    text-align: center;
+  }
+
+.gallery-swiper {
+  width: 100%;
+  padding: 2rem 1.5rem 4rem;
+  margin-top: 2rem;
+}
+
+.gallery-swiper .swiper-slide {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.gallery-swiper .swiper-slide img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  display: block;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: var(--gold);
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 1.2rem;
+}
+
+.swiper-pagination-bullet { background: var(--blush); }
+.swiper-pagination-bullet-active { background: var(--gold); }
+
+
+  /* ── DETAILS ── */
+  .details {
+    padding: 6rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 3.5rem;
+  }
+
+  @media (max-width: 600px) { .details-grid { grid-template-columns: 1fr; } }
+
+  .detail-card {
+    background: #fff;
+    padding: 3rem 2rem;
+    position: relative;
+  }
+
+  .detail-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 40px; height: 2px;
+    background: var(--gold);
+  }
+
+  .detail-icon { font-size: 1.6rem; margin-bottom: 1rem; }
+
+  .detail-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 300;
+    margin-bottom: 0.8rem;
+  }
+
+  .detail-body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: rgba(44,36,32,0.7);
+    letter-spacing: 0.03em;
+  }
+
+  .details-eyebrow { color: black; }
+
+  .details-circles { display: flex; justify-content: center; }
+
+  .dresscode-circle {
+    width: 36px; height: 36px;
+    border-radius: 100%;
+  }
+  .dresscode-circle:nth-child(1) { background-color: #FD9BC2; z-index: 3; }
+  .dresscode-circle:nth-child(2) { background-color: #FEBECC; margin-left: -10px; z-index: 2; }
+  .dresscode-circle:nth-child(3) { background-color: #FBD2D8; margin-left: -10px; z-index: 1; }
+
+  /* ── TIMELINE ── */
+  .timeline__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.2;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 0 2rem;
+  }
+
+  .timeline {
+    padding: 2.5rem 2rem;
+    background: #fff;
+    max-width: 860px;
+    margin: 0 auto 0 auto;
+  }
+
+  .timeline__items {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .timeline__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .timeline__item--top    { flex-direction: column; }
+  .timeline__item--bottom { flex-direction: column-reverse; }
+
+  .timeline__info { text-align: center; }
+
+  .timeline__time {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #1a1a1a;
+    line-height: 1.2;
+  }
+
+  .timeline__label {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #1a1a1a;
+  }
+
+  .timeline__icon { width: 90px; height: 90px; }
+
+  .timeline__icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* ── FAQ ── */
+  .faq {
+    background: #f9d9d9;
+    padding: 2.5rem 2rem;
+    max-width: 860px;
+    margin: 0 auto 0 auto;
+  }
+
+  .faq__block { margin-bottom: 2.2rem; }
+
+  .faq__title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7a8a8a;
+    margin-bottom: 1rem;
+  }
+
+.timeline__item--dinner{
+  flex-direction: column-reverse;
+}
+
+  .faq__diamond {
+    position: relative;
+    display: inline-block;
+    width: 28px; height: 28px;
+    background: #e8a0a0;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+    border-radius: 3px;
+  }
+
+  .faq__diamond::after {
+    content: '';
+    position: absolute;
+    inset: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #c06070;
+  }
+
+  .faq__list {
+    list-style: disc;
+    padding-left: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .faq__list li,
+  .faq__text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: rgba(44,36,32,0.8);
+    margin-top: 0.5rem;
+  }
+
+  .faq__text + .faq__text { margin-top: 1rem; }
+
+  /* ── RSVP ── */
+  .rsvp {
+    position: relative;
+    padding: 5rem 2rem;
+    text-align: center;
+    background-image: url("./pictures/bg.jpeg");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .rsvp::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(30, 20, 10, 0.68);
+  }
+
+  .rsvp__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .rsvp__eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 0.8rem;
+  }
+
+  .rsvp__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(3rem, 8vw, 5rem);
+    color: #fff;
+    margin-bottom: 2.5rem;
+  }
+
+  .rsvp__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .rsvp__qr-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .rsvp__qr {
+    width: 160px; height: 160px;
+    object-fit: contain;
+    border: 4px solid rgba(201,169,110,0.5);
+    padding: 8px;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .rsvp__qr-label {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.8);
+    text-transform: uppercase;
+  }
+
+  .rsvp__or {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 300px;
+    color: rgba(255,255,255,0.8);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+  }
+
+  .rsvp__or::before,
+  .rsvp__or::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201,169,110,0.3);
+  }
+
+  .rsvp__link {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    background: #c9a96e;
+    color: #2c2420;
+    text-decoration: none;
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: opacity 0.3s;
+  }
+  .rsvp__link:hover { opacity: 0.85; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #1a1210;
+    text-align: center;
+    padding: 2.5rem 2rem;
+    color: rgba(245,240,232,0.3);
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  footer span { color: var(--gold); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Базовое состояние — скрыто */
+  .reveal {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Задержки для последовательного появления */
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.22s; }
+  .reveal-delay-3 { transition-delay: 0.34s; }
+  .reveal-delay-4 { transition-delay: 0.46s; }
+
+  .gallery-img-wrapper img:nth-child(1){
+    margin-left: 150px;
+    overflow: visible;
+  }
+  .gallery-img-wrapper{
+    overflow: hidden;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-slider" id="heroSlider">
+    <div class="hero-slide active"></div>
+    <div class="hero-slide"></div>
+    <div class="hero-slide"></div>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-label">You are cordially invited to the marriage of</p>
+    <h1 class="hero-names">
+      Niño<br>
+      <span class="hero-ampersand">&amp;</span>
+      Faye
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-date">"Therefore what God has joined together, let no one separate"<br>Matthew 19:6</p>
+    <a href="#rsvp" class="hero-cta">RSVP Now</a>
+  </div>
+
+  <div class="slider-dots" id="heroDotsWrap"></div>
+</section>
+
+<!-- ═══ SAVE THE DATE ═══ -->
+<section class="save-the-date">
+  <p class="section-eyebrow reveal">Mark Your Calendar</p>
+  <h2 class="section-title reveal reveal-delay-1" style="color:#7C7877;">Save the Date</h2>
+  <div class="date-block reveal reveal-delay-2">
+    <div class="date-unit"><div class="date-num">17</div><div class="date-label">Day</div></div>
+    <div class="date-unit"><div class="date-num">Jun</div><div class="date-label">Month</div></div>
+    <div class="date-unit"><div class="date-num">2026</div><div class="date-label">Year</div></div>
+  </div>
+</section>
+
+<!-- ═══ OUR STORY ═══ -->
+<section style="background:var(--cream); padding: 2rem 0;">
+  <div class="story">
+    <div class="story-image reveal">
+      <div class="story-image__wrapper">
+        <img src="./pictures/story.jpg" alt="The couple">
+      </div>
+    </div>
+    <div class="story-text">
+      <h2 class="section-title reveal">OUR LOVE STORY</h2>
+      <p class="story-body reveal reveal-delay-1">
+        We first met as elementary school classmates — Niño, the quiet and shy one, and Faye, the talkative and outgoing one. Our neighbors used to tease us together, not knowing it was God's gentle way of leading us to each other.
+        <br><br>
+        Years later, in 2021, a simple conversation turned into a beautiful love story — shared adventures, late-night talks, and dreams of a future together. After being in relationship for four years, we soon realized we had found something special.
+        <br><br>
+        Through every challenge and joy, our bond grew stronger, confirming that we were not just partners but best friends. We've learned that love isn't just about the big moments, but also the small, everyday ones that make life sweeter.
+        <br><br>
+        Today, we joyfully begin this new chapter of our lives, surrounded by those who mean the most to us.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GALLERY ═══ -->
+<section class="gallery-section">
+  <p class="section-eyebrow reveal visible">Moments Together</p>
+  <h2 class="section-title reveal reveal-delay-1 visible">Our Gallery</h2>
+
+<div class="swiper gallery-swiper reveal reveal-delay-2">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide">
+      <div class="gallery-img-wrapper">
+        <img src="./pictures/gallery-1.jpg" alt="Gallery 1">
+      </div>
+    </div>
+    <div class="swiper-slide">
+      <img src="./pictures/gallery-2.jpg" alt="Gallery 2">
+    </div>
+    <div class="swiper-slide">
+      <img src="./pictures/gallery-3.jpg" alt="Gallery 3">
+    </div>
+    <div class="swiper-slide">
+      <img src="./pictures/slider-4.jpeg" alt="Gallery 4">
+    </div>
+    <div class="swiper-slide">
+      <img src="./pictures/slider-5.jpeg" alt="Gallery 5">
+    </div>
+  </div>
+  <div class="swiper-pagination"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
+</section>
+
+<!-- ═══ DETAILS ═══ -->
+<section class="details">
+  <p class="section-eyebrow details-eyebrow reveal">The Celebration</p>
+  <h2 class="section-title reveal reveal-delay-1">Wedding Details</h2>
+
+  <div class="details-grid reveal reveal-delay-2">
+    <div class="detail-card">
+      <div class="detail-icon">💍</div>
+      <h3 class="detail-heading">The Ceremony</h3>
+      <p class="detail-body">
+        Wednesday, 17 June 2026<br>
+        2:00 PM<br><br>
+        SAFIRA GRAND HALL, 3RD FLOOR BLU HOTEL<br>
+        BONTO BLVD, SANTO CRISTO, TABACO CITY,<br>
+        ALBAY, 4511
+      </p>
+    </div>
+    <div class="detail-card">
+      <div class="detail-icon details-circles">
+        <div class="dresscode-circle"></div>
+        <div class="dresscode-circle"></div>
+        <div class="dresscode-circle"></div>
+      </div>
+      <h3 class="detail-heading">Dress Code</h3>
+      <p class="detail-body">
+        Formal attire<br><br>
+        We encourage for ladies to wear Pink Semi Formal Attire.<br>
+        For men Blue/Gray Polo or Long Sleeve
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TIMELINE ═══ -->
+<h2 class="timeline__title reveal">Timeline</h2>
+
+<section class="timeline">
+  <div class="timeline__items">
+
+    <div class="timeline__item timeline__item--bottom reveal">
+      <div class="timeline__info">
+        <p class="timeline__time">2:00 P.M.</p>
+        <p class="timeline__label">Ceremony</p>
+      </div>
+      <div class="timeline__icon">
+        <img src="./pictures/ceremony.png" alt="Ceremony">
+      </div>
+    </div>
+
+    <div class="timeline__item timeline__item--bottom reveal reveal-delay-1">
+      <div class="timeline__info">
+        <p class="timeline__time">3:30 P.M.</p>
+        <p class="timeline__label">Pictorial</p>
+      </div>
+      <div class="timeline__icon">
+        <img src="./pictures/pictorial.png" alt="Pictorial">
+      </div>
+    </div>
+
+    <div class="timeline__item timeline__item--bottom reveal reveal-delay-2">
+      <div class="timeline__info">
+        <p class="timeline__time">4:00 P.M.</p>
+        <p class="timeline__label">Reception Proper</p>
+      </div>
+      <div class="timeline__icon">
+        <img src="./pictures/reception.png" alt="Reception Proper">
+      </div>
+    </div>
+
+    <div class="timeline__item timeline__item--bottom reveal reveal-delay-3">
+      <div class="timeline__info">
+        <p class="timeline__time">5:00 P.M.</p>
+        <p class="timeline__label">Dinner</p>
+      </div>
+      <div class="timeline__icon">
+        <img src="./pictures/dinner.png" alt="Dinner">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="faq">
+
+  <div class="faq__block reveal">
+    <h2 class="faq__title">
+      Reminders
+    </h2>
+    <ul class="faq__list">
+      <li>Be on time.</li>
+      <li>Finish the event</li>
+      <li>Follow dress code</li>
+      <li>Enjoy &amp; have fun</li>
+      <li>We invite you to be fully present—please avoid using cellphones during the ceremony.</li>
+    </ul>
+  </div>
+
+  <div class="faq__block reveal reveal-delay-1">
+    <h2 class="faq__title">
+      Can I Bring Some With Me?
+    </h2>
+    <p class="faq__text">
+      As much as we want to celebrate with everybody, due to venue restriction &amp; limited resources we can only accommodate the guests listed on the invitation.
+    </p>
+  </div>
+
+  <div class="faq__block reveal reveal-delay-2">
+    <h2 class="faq__title">
+      Gift Guide
+    </h2>
+    <p class="faq__text">
+      There is nothing more precious than the honor of your presence and prayers. But if we are honored to receive a gift from you, may we humbly request a monetary gift as we begin our new life together.
+    </p>
+    <p class="faq__text">
+      Your presence in our celebration is already a wonderful gift to us.
+    </p>
+  </div>
+
+</section>
+
+<!-- ═══ RSVP ═══ -->
+<section class="rsvp" id="rsvp">
+  <div class="rsvp__inner">
+    <p class="rsvp__eyebrow reveal">Request the honor of your presence as we unite in the sacrament of marriage</p>
+    <h2 class="rsvp__title reveal reveal-delay-1">RSVP</h2>
+
+    <div class="rsvp__body reveal reveal-delay-2">
+      <div class="rsvp__qr-wrap">
+        <img src="./pictures/frame.png" alt="QR Code" class="rsvp__qr">
+        <p class="rsvp__qr-label">Scan to confirm</p>
+      </div>
+
+      <div class="rsvp__or"><span>or</span></div>
+
+      <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLSfPvfpUZav63PjF76iAJt20srqllSWGHasT-kBHMfPre8fFQg/viewform"
+        target="_blank"
+        class="rsvp__link"
+      >
+        Click Here to Fill the Form
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer >
+  With love, <span>Faye &amp; Niño</span> · June 17, 2026
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+/* ─── HERO SLIDER ─── */
+const slides = document.querySelectorAll('.hero-slide');
+const dotsWrap = document.getElementById('heroDotsWrap');
+let current = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('button');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.setAttribute('aria-label', 'Slide ' + (i + 1));
+  d.onclick = () => goTo(i);
+  dotsWrap.appendChild(d);
+});
+
+function goTo(n) {
+  slides[current].classList.remove('active');
+  document.querySelectorAll('.dot')[current].classList.remove('active');
+  current = (n + slides.length) % slides.length;
+  slides[current].classList.add('active');
+  document.querySelectorAll('.dot')[current].classList.add('active');
+}
+
+setInterval(() => goTo(current + 1), 4300);
+
+/* ─── GALLERY SLIDER ─── */
+new Swiper('.gallery-swiper', {
+  slidesPerView: 1,
+  spaceBetween: 20,
+  loop: true,
+  grabCursor: true,
+  pagination: { el: '.swiper-pagination', clickable: true },
+  navigation: { prevEl: '.swiper-button-prev', nextEl: '.swiper-button-next' },
+  breakpoints: {
+    700: { slidesPerView: 2 },
+    1000: { slidesPerView: 3 }
+  }
+});
+
+/* ─── REVEAL ON SCROLL ─── */
+const revealEls = document.querySelectorAll('.reveal');
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+revealEls.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
