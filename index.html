@@ -691,11 +691,7 @@
   .reveal-delay-4 { transition-delay: 0.46s; }
 
   .gallery-img-wrapper img:nth-child(1){
-    margin-left: 150px;
-    overflow: visible;
-  }
-  .gallery-img-wrapper{
-    overflow: hidden;
+    object-position: 5%;
   }
 </style>
 </head>
@@ -967,7 +963,7 @@ setInterval(() => goTo(current + 1), 4300);
 /* ─── GALLERY SLIDER ─── */
 new Swiper('.gallery-swiper', {
   slidesPerView: 1,
-  spaceBetween: 20,
+  spaceBetween: 25,
   loop: true,
   grabCursor: true,
   pagination: { el: '.swiper-pagination', clickable: true },
